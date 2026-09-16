@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SG Soluções Digitais — Marketing de performance</title>
+<meta name="description" content="SG Soluções Digitais é uma empresa brasileira de marketing de performance: planejamento, compra e mensuração de mídia paga para negócios digitais.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --field:#FFFFFF;
+    --paper:#FFFFFF;
+    --surface:#F5F8F8;
+    --ink:#16304F;
+    --muted:#5C7084;
+    --rule:#E3E8EC;
+    --accent:#0A6E6E;
+    --accent-soft:#A8D2D2;
+    --focus:#0A6E6E;
+    color-scheme:light;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:#FFFFFF;
+    color:var(--ink);
+    font-family:"Archivo","Helvetica Neue",Arial,sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    font-weight:400;
+  }
+  img{max-width:100%}
+  a{color:inherit}
+  ::selection{background:var(--accent-soft);color:var(--ink)}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:2px}
+
+  .shell{max-width:1060px;margin:0 auto;padding:0 28px}
+
+  /* ---------- header ---------- */
+  header{
+    border-bottom:1px solid var(--rule);
+    background:var(--field);
+    position:sticky;top:0;z-index:10;
+  }
+  .bar{
+    display:flex;align-items:baseline;justify-content:space-between;
+    gap:24px;padding:22px 0;flex-wrap:wrap;
+  }
+  .mark{
+    display:flex;align-items:baseline;gap:10px;
+    text-decoration:none;
+  }
+  .mark b{
+    font-family:"Newsreader",Georgia,serif;
+    font-weight:500;font-size:28px;letter-spacing:-.01em;
+    line-height:1;
+  }
+  .mark span{
+    font-size:14px;color:var(--muted);letter-spacing:.01em;
+  }
+  nav{display:flex;gap:26px;flex-wrap:wrap}
+  nav button{
+    background:none;border:0;padding:0 0 3px;margin:0;cursor:pointer;
+    font:inherit;font-size:15px;color:var(--muted);
+    border-bottom:1.5px solid transparent;
+  }
+  nav button:hover{color:var(--ink)}
+  nav button[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+
+  /* ---------- pages ---------- */
+  .page{display:none;padding:64px 0 0}
+  .page.is-on{display:block}
+  @media (prefers-reduced-motion:no-preference){
+    .page.is-on{animation:in .28s ease-out both}
+    @keyframes in{from{opacity:0}to{opacity:1}}
+  }
+
+  h1{
+    font-family:"Newsreader",Georgia,serif;
+    font-weight:400;
+    font-size:clamp(34px,5.6vw,58px);
+    line-height:1.08;
+    letter-spacing:-.018em;
+    margin:0 0 22px;
+    max-width:17ch;
+  }
+  h2{
+    font-family:"Newsreader",Georgia,serif;
+    font-weight:400;font-size:clamp(24px,3.2vw,32px);
+    line-height:1.2;letter-spacing:-.012em;
+    margin:0 0 16px;
+  }
+  h3{
+    font-size:17px;font-weight:600;margin:0 0 6px;letter-spacing:-.005em;
+  }
+  p{margin:0 0 18px;max-width:64ch}
+  .lede{font-size:19px;color:var(--muted);max-width:56ch;line-height:1.55}
+
+  /* ---------- registro (hero identity block) ---------- */
+  .registro{
+    margin:44px 0 0;
+    border-top:2px solid var(--accent);
+    background:var(--surface);
+    padding:6px 0 0;
+  }
+  .registro dl{
+    margin:0;display:grid;grid-template-columns:200px 1fr;
+  }
+  .registro dt,.registro dd{
+    margin:0;padding:14px 20px;
+    border-bottom:1px solid var(--rule);
+    font-size:15px;
+  }
+  .registro dt{color:var(--muted)}
+  .registro dd{font-weight:500;font-variant-numeric:tabular-nums}
+  @media (max-width:640px){
+    .registro dl{grid-template-columns:1fr}
+    .registro dt{padding-bottom:0;border-bottom:0}
+    .registro dd{padding-top:2px}
+  }
+
+  /* ---------- generic blocks ---------- */
+  .band{padding:72px 0;border-top:1px solid var(--rule);margin-top:72px}
+  .band:first-of-type{margin-top:80px}
+
+  .servicos{
+    margin:0;display:grid;gap:0;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  }
+  .servicos > div{
+    padding:26px 0;border-top:1px solid var(--rule);
+  }
+  .servicos > div p{font-size:15.5px;color:var(--muted);margin:0;max-width:40ch}
+  @media (min-width:700px){
+    .servicos{column-gap:48px}
+  }
+
+  .faq{max-width:68ch;border-top:2px solid var(--accent)}
+  .faq details{border-bottom:1px solid var(--rule)}
+  .faq summary{
+    cursor:pointer;list-style:none;padding:18px 28px 18px 0;
+    font-size:16.5px;font-weight:500;position:relative;
+  }
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{
+    content:"+";position:absolute;right:2px;top:16px;
+    font-size:20px;color:var(--accent);font-weight:400;line-height:1;
+  }
+  .faq details[open] summary::after{content:"–"}
+  .faq details p{
+    margin:0 0 20px;font-size:15.5px;color:var(--muted);max-width:60ch;
+  }
+
+  .duo{display:grid;gap:48px;grid-template-columns:1fr}
+  @media (min-width:820px){.duo{grid-template-columns:1.15fr .85fr}}
+
+  .contato dl{margin:0;border-top:2px solid var(--accent)}
+  .contato .row{
+    display:grid;grid-template-columns:180px 1fr;
+    border-bottom:1px solid var(--rule);
+  }
+  .contato dt,.contato dd{margin:0;padding:14px 0;font-size:15.5px}
+  .contato dt{color:var(--muted)}
+  .contato dd{font-weight:500}
+  .contato a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-soft)}
+  .contato a:hover{border-bottom-width:2px}
+  @media (max-width:600px){
+    .contato .row{grid-template-columns:1fr;gap:0}
+    .contato dt{padding-bottom:0}
+    .contato dd{padding-top:2px}
+  }
+
+  /* ---------- legal ---------- */
+  .legal{max-width:68ch}
+  .legal h2{margin-top:0}
+  .legal h3{margin-top:34px;font-size:16px}
+  .legal p,.legal li{font-size:16px;color:var(--ink)}
+  .legal ul{padding-left:20px;margin:0 0 18px}
+  .legal li{margin-bottom:8px;max-width:62ch}
+  .stamp{
+    font-size:14px;color:var(--muted);
+    background:var(--surface);padding:14px 16px;
+    border-left:2px solid var(--accent);
+    margin:0 0 34px;
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top:96px;border-top:1px solid var(--rule);
+    background:var(--surface);padding:52px 0 40px;
+  }
+  .frow{
+    display:grid;gap:40px;grid-template-columns:1fr;
+  }
+  @media (min-width:760px){.frow{grid-template-columns:1.4fr 1fr 1fr}}
+  .fid{font-size:14.5px;line-height:1.75;color:var(--muted)}
+  .fid strong{display:block;color:var(--ink);font-weight:600;font-size:15.5px;margin-bottom:6px}
+  .fnav{display:flex;flex-direction:column;gap:9px;align-items:flex-start}
+  .fnav h4{
+    margin:0 0 6px;font-size:13px;font-weight:600;color:var(--ink);
+  }
+  .fnav button{
+    background:none;border:0;padding:0;cursor:pointer;font:inherit;
+    font-size:14.5px;color:var(--muted);text-align:left;
+  }
+  .fnav button:hover{color:var(--ink)}
+  .fnav a{
+    font-size:14.5px;color:var(--muted);text-decoration:none;
+  }
+  .fnav a:hover{color:var(--ink);text-decoration:underline}
+  .fbase{
+    margin-top:40px;padding-top:22px;border-top:1px solid var(--rule);
+    font-size:13.5px;color:var(--muted);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="shell bar">
+    <a class="mark" href="#inicio" data-go="inicio">
+      <b>SG</b><span>Soluções Digitais</span>
+    </a>
+    <nav id="nav">
+      <button data-go="inicio" aria-current="page">Início</button>
+      <button data-go="empresa">Quem somos</button>
+      <button data-go="servicos">Serviços</button>
+      <button data-go="contato">Contato</button>
+    </nav>
+  </div>
+</header>
+
+<main class="shell">
+
+  <!-- ===================== INÍCIO ===================== -->
+  <section class="page is-on" id="inicio">
+    <h1>Mídia paga para operações que vivem de número.</h1>
+    <p class="lede">A SG Soluções Digitais planeja, compra e mede tráfego pago para negócios digitais brasileiros. Do conceito criativo ao fechamento de caixa, numa única cadeia de responsabilidade.</p>
+
+    <div class="registro">
+      <dl>
+        <dt>Razão social</dt><dd>SG Soluções Digitais Ltda.</dd>
+        <dt>Nome fantasia</dt><dd>SG Soluções Digitais</dd>
+        <dt>CNPJ</dt><dd>52.972.212/0001-34</dd>
+        <dt>Endereço da sede</dt><dd>Rua Cel. José Eusébio, 95 — Casa 13, Higienópolis, São Paulo — SP, CEP 01239-030</dd>
+        <dt>Telefone</dt><dd>+55 (11) 92678-3180</dd>
+        <dt>E-mail</dt><dd>sgequipeacessos@gmail.com</dd>
+      </dl>
+    </div>
+
+    <div class="band">
+      <div class="duo">
+        <div>
+          <h2>O que fazemos</h2>
+          <p>Trabalhamos com resposta direta: campanhas cujo retorno é medido em venda, não em impressão. Isso muda o que entregamos — a conta não fecha no relatório de mídia, fecha na planilha de caixa do cliente.</p>
+          <p>Operamos principalmente em Meta Ads, com estrutura própria de mensuração ponta a ponta: pixel e API de conversões, parametrização de origem, atribuição por criativo e reconciliação com a plataforma de pagamento.</p>
+        </div>
+        <div>
+          <h2>Como trabalhamos</h2>
+          <p>Cada conta tem rotina diária de leitura, régua definida de corte de criativo e fechamento semanal auditado. Nada roda sem critério escrito de quando desligar.</p>
+          <p>Relatórios saem em cadência fixa, com os números que importam para a decisão: custo por aquisição, margem de contribuição e receita atribuída por peça.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== QUEM SOMOS ===================== -->
+  <section class="page" id="empresa">
+    <h1>Quem somos</h1>
+    <p class="lede">Uma empresa brasileira de marketing de performance, formada por profissionais de compra de mídia, copy e mensuração.</p>
+
+    <div class="band">
+      <div class="duo">
+        <div>
+          <h2>A empresa</h2>
+          <p>A SG Soluções Digitais nasceu da operação — não da consultoria. A equipe vem de anos gerindo verba de resposta direta em produtos digitais e físicos, e a empresa foi constituída para prestar esse mesmo serviço de forma estruturada a clientes e parceiros.</p>
+          <p>Atuamos de forma remota a partir da sede no Brasil, atendendo operações no mercado brasileiro e norte-americano.</p>
+
+          <h2 style="margin-top:44px">No que acreditamos</h2>
+          <p>Mídia paga não é um campo criativo com resultado incerto. É uma operação com entrada, saída e margem — e que precisa ser conduzida com o mesmo rigor de um setor financeiro.</p>
+          <p>Por isso não trabalhamos com promessa de resultado. Trabalhamos com critério de decisão explícito, cadência de leitura e transparência total sobre o que foi gasto e o que voltou.</p>
+        </div>
+        <div>
+          <h2>Em resumo</h2>
+          <div class="registro" style="margin-top:20px">
+            <dl style="grid-template-columns:1fr">
+              <dt style="padding-bottom:0;border-bottom:0">Constituição</dt>
+              <dd style="padding-top:2px">Sociedade empresária limitada (EPP), registrada na Junta Comercial do Estado de São Paulo</dd>
+              <dt style="padding-bottom:0;border-bottom:0">Atuação</dt>
+              <dd style="padding-top:2px">Marketing de performance e mídia paga</dd>
+              <dt style="padding-bottom:0;border-bottom:0">Mercados</dt>
+              <dd style="padding-top:2px">Brasil e Estados Unidos</dd>
+              <dt style="padding-bottom:0;border-bottom:0">Modelo</dt>
+              <dd style="padding-top:2px">Contrato de prestação de serviço recorrente</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVIÇOS ===================== -->
+  <section class="page" id="servicos">
+    <h1>Serviços</h1>
+    <p class="lede">Cinco frentes que funcionam como uma coisa só. Não vendemos separado porque não operam separado.</p>
+
+    <div class="band">
+      <div class="servicos">
+        <div>
+          <h3>Gestão de tráfego pago</h3>
+          <p>Estrutura de campanha, distribuição de verba e escala em Meta Ads, com rotina diária de otimização e critério documentado de corte.</p>
+        </div>
+        <div>
+          <h3>Estratégia criativa</h3>
+          <p>Definição de persona, ângulo e oferta; roteiro e direção de produção; teste e leitura de desempenho peça a peça.</p>
+        </div>
+        <div>
+          <h3>Mensuração e atribuição</h3>
+          <p>Implementação de pixel e API de conversões, parametrização de origem e reconciliação entre plataforma de anúncio, player de vídeo e gateway de pagamento.</p>
+        </div>
+        <div>
+          <h3>Páginas e funil</h3>
+          <p>Construção e otimização de páginas de captura, quiz, checkout e ofertas complementares, com teste controlado de uma variável por vez.</p>
+        </div>
+        <div>
+          <h3>Relatórios e auditoria</h3>
+          <p>Fechamento diário e semanal, auditoria de investimento contra o extrato da plataforma e leitura de margem de contribuição por campanha.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="band">
+      <h2>Perguntas frequentes</h2>
+      <div class="faq">
+        <details>
+          <summary>A verba de mídia está inclusa no valor do serviço?</summary>
+          <p>Não. O investimento nas plataformas de anúncio é pago diretamente pelo contratante, com cartão em nome da empresa dele. Nossos honorários são separados e não variam com o valor investido.</p>
+        </details>
+        <details>
+          <summary>Vocês trabalham com contas de anúncio próprias ou do cliente?</summary>
+          <p>Do cliente, como regra. Os ativos — Business Manager, contas de anúncio, pixel e domínio — ficam sob titularidade do contratante, e atuamos como parceiros com acesso delimitado.</p>
+        </details>
+        <details>
+          <summary>Qual o prazo para ver resultado?</summary>
+          <p>Depende de produto, oferta e verba. O que definimos no início do contrato não é uma data de resultado, e sim os marcos de aprendizado: quando a estrutura estará no ar, quando haverá volume suficiente para leitura e quando a primeira rodada de testes criativos fecha.</p>
+        </details>
+        <details>
+          <summary>Vocês garantem retorno sobre o investimento?</summary>
+          <p>Não. Nenhuma empresa séria de mídia paga garante retorno, porque o resultado depende de variáveis fora do controle do gestor — produto, preço, concorrência e leilão. O que garantimos é método, cadência de leitura e transparência sobre cada real investido.</p>
+        </details>
+        <details>
+          <summary>Existe prazo mínimo de contrato?</summary>
+          <p>Trabalhamos com contrato recorrente e aviso prévio de 30 dias para encerramento por qualquer das partes. Não há multa por rescisão após o aviso.</p>
+        </details>
+        <details>
+          <summary>Como funciona o repasse de relatórios?</summary>
+          <p>Fechamento diário resumido e relatório semanal completo, com investimento, custo por aquisição, receita atribuída e margem de contribuição. O contratante tem acesso de leitura às contas o tempo todo.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTATO ===================== -->
+  <section class="page" id="contato">
+    <h1>Contato</h1>
+    <p class="lede">Atendimento comercial e administrativo em horário comercial, de segunda a sexta.</p>
+
+    <div class="band">
+      <div class="duo">
+        <div class="contato">
+          <dl>
+            <div class="row"><dt>E-mail</dt><dd><a href="mailto:sgequipeacessos@gmail.com">sgequipeacessos@gmail.com</a></dd></div>
+            <div class="row"><dt>Telefone</dt><dd><a href="tel:+5511926783180">+55 (11) 92678-3180</a></dd></div>
+            <div class="row"><dt>Endereço</dt><dd>Rua Cel. José Eusébio, 95 — Casa 13<br>Higienópolis, São Paulo — SP<br>CEP 01239-030</dd></div>
+            <div class="row"><dt>Horário</dt><dd>Segunda a sexta, 9h às 18h (BRT)</dd></div>
+            <div class="row"><dt>CNPJ</dt><dd>52.972.212/0001-34</dd></div>
+          </dl>
+        </div>
+        <div>
+          <h2>Canal único</h2>
+          <p>Atendimento comercial, currículos e solicitações relacionadas a dados pessoais (LGPD) são recebidos pelo mesmo endereço de e-mail indicado ao lado.</p>
+          <p>Para agilizar o encaminhamento interno, use no assunto a palavra <strong>Comercial</strong>, <strong>Currículo</strong> ou <strong>LGPD</strong>, conforme o caso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRIVACIDADE ===================== -->
+  <section class="page" id="privacidade">
+    <div class="legal">
+      <h1 style="font-size:clamp(30px,4.4vw,44px)">Política de Privacidade</h1>
+      <p class="stamp">Última atualização: 14 de setembro de 2026. Esta política se aplica ao site sgsolucoesdigitais.online e aos serviços prestados pela SG Soluções Digitais Ltda., CNPJ 52.972.212/0001-34.</p>
+
+      <h3>1. Quem é o controlador dos dados</h3>
+      <p>A SG Soluções Digitais Ltda., inscrita no CNPJ sob o nº 52.972.212/0001-34, com sede na Rua Cel. José Eusébio, 95, São Paulo — SP, é a controladora dos dados pessoais tratados neste site, nos termos da Lei nº 13.709/2018 (LGPD).</p>
+
+      <h3>2. Quais dados coletamos</h3>
+      <ul>
+        <li>Dados que você nos envia: nome, e-mail, telefone e conteúdo das mensagens enviadas por formulário ou e-mail.</li>
+        <li>Dados de navegação: endereço IP, tipo de dispositivo, navegador, páginas visitadas e origem do acesso.</li>
+        <li>Dados de publicidade: identificadores coletados por pixels e tags de terceiros quando você chega ao site por um anúncio.</li>
+      </ul>
+
+      <h3>3. Para que usamos</h3>
+      <ul>
+        <li>Responder solicitações comerciais e de suporte.</li>
+        <li>Executar contratos de prestação de serviço.</li>
+        <li>Medir o desempenho de campanhas publicitárias e melhorar o site.</li>
+        <li>Cumprir obrigações legais, fiscais e regulatórias.</li>
+      </ul>
+
+      <h3>4. Base legal</h3>
+      <p>Tratamos dados pessoais com fundamento na execução de contrato, no cumprimento de obrigação legal, no legítimo interesse para medição e segurança, e no consentimento, quando aplicável — hipótese em que você pode revogá-lo a qualquer momento.</p>
+
+      <h3>5. Compartilhamento</h3>
+      <p>Compartilhamos dados apenas com operadores necessários à prestação do serviço, como provedores de hospedagem, ferramentas de análise, plataformas de anúncio e meios de pagamento, além de autoridades públicas quando exigido por lei. Não vendemos dados pessoais.</p>
+
+      <h3>6. Cookies e tecnologias semelhantes</h3>
+      <p>Utilizamos cookies essenciais ao funcionamento do site e cookies de medição e publicidade. Você pode bloquear ou apagar cookies nas configurações do seu navegador; cookies essenciais, se bloqueados, podem comprometer o funcionamento de partes do site.</p>
+
+      <h3>7. Retenção</h3>
+      <p>Mantemos os dados pelo tempo necessário às finalidades acima e pelos prazos legais de guarda. Encerrado o prazo, os dados são eliminados ou anonimizados.</p>
+
+      <h3>8. Seus direitos</h3>
+      <p>Você pode solicitar confirmação de tratamento, acesso, correção, anonimização, portabilidade, eliminação e informação sobre compartilhamento, além de revogar consentimento. Basta escrever para sgequipeacessos@gmail.com com o assunto “LGPD”. Respondemos em até 15 dias.</p>
+
+      <h3>9. Segurança</h3>
+      <p>Adotamos medidas técnicas e administrativas para proteger os dados contra acesso não autorizado, perda e destruição, incluindo controle de acesso e transmissão criptografada.</p>
+
+      <h3>10. Alterações</h3>
+      <p>Esta política pode ser atualizada. A data de última atualização no topo indica a versão vigente.</p>
+    </div>
+  </section>
+
+  <!-- ===================== TERMOS ===================== -->
+  <section class="page" id="termos">
+    <div class="legal">
+      <h1 style="font-size:clamp(30px,4.4vw,44px)">Termos de Uso</h1>
+      <p class="stamp">Última atualização: 14 de setembro de 2026. Ao acessar este site, você concorda com estes termos.</p>
+
+      <h3>1. Objeto</h3>
+      <p>Este site é mantido pela SG Soluções Digitais Ltda., CNPJ 52.972.212/0001-34, e tem finalidade institucional: apresentar a empresa, seus serviços e seus canais de contato.</p>
+
+      <h3>2. Uso permitido</h3>
+      <p>Você pode navegar, ler e compartilhar o conteúdo deste site para fins pessoais e informativos. É vedado utilizar o site para fins ilícitos, tentar obter acesso não autorizado a sistemas, extrair conteúdo de forma automatizada em escala ou reproduzir materiais para fins comerciais sem autorização escrita.</p>
+
+      <h3>3. Propriedade intelectual</h3>
+      <p>Marca, textos, identidade visual e demais materiais publicados são de titularidade da SG Soluções Digitais Ltda. ou licenciados a ela. O acesso ao site não transfere qualquer direito sobre esses materiais.</p>
+
+      <h3>4. Serviços</h3>
+      <p>A contratação de serviços não ocorre por este site. Os serviços descritos são prestados mediante proposta comercial e contrato específico, que prevalecem sobre qualquer informação aqui publicada em caso de divergência.</p>
+
+      <h3>5. Ausência de garantia de resultado</h3>
+      <p>As descrições de serviço têm caráter informativo e não constituem promessa de resultado, faturamento ou retorno sobre investimento. Resultados em mídia paga dependem de produto, oferta, mercado e verba, entre outros fatores fora do controle exclusivo da empresa.</p>
+
+      <h3>6. Links externos</h3>
+      <p>O site pode conter links para páginas de terceiros. Não controlamos esses conteúdos e não respondemos por eles.</p>
+
+      <h3>7. Limitação de responsabilidade</h3>
+      <p>Empregamos esforços razoáveis para manter o site disponível e as informações corretas, mas não garantimos funcionamento ininterrupto nem ausência de erros. Não respondemos por danos decorrentes de indisponibilidade temporária.</p>
+
+      <h3>8. Alterações</h3>
+      <p>Podemos alterar estes termos a qualquer momento. O uso continuado após a publicação implica concordância com a versão vigente.</p>
+
+      <h3>9. Lei aplicável e foro</h3>
+      <p>Aplica-se a legislação brasileira. Fica eleito o foro da comarca da sede da empresa para dirimir questões decorrentes destes termos, salvo hipótese legal diversa.</p>
+    </div>
+  </section>
+
+  <!-- ===================== REEMBOLSO ===================== -->
+  <section class="page" id="reembolso">
+    <div class="legal">
+      <h1 style="font-size:clamp(30px,4.4vw,44px)">Política de Reembolso e Cancelamento</h1>
+      <p class="stamp">Última atualização: 14 de setembro de 2026. Aplica-se aos serviços contratados junto à SG Soluções Digitais Ltda., CNPJ 52.972.212/0001-34.</p>
+
+      <h3>1. Direito de arrependimento</h3>
+      <p>Em contratações realizadas fora do estabelecimento comercial, você pode desistir em até 7 dias corridos contados da assinatura do contrato ou do primeiro pagamento, o que ocorrer por último, conforme o artigo 49 do Código de Defesa do Consumidor. A devolução é integral e ocorre pelo mesmo meio de pagamento.</p>
+
+      <h3>2. Como solicitar</h3>
+      <p>A solicitação deve ser enviada para sgequipeacessos@gmail.com, a partir do e-mail cadastrado, informando razão social ou nome do contratante e o motivo. Confirmamos o recebimento em até 2 dias úteis.</p>
+
+      <h3>3. Prazo de processamento</h3>
+      <ul>
+        <li>Cartão de crédito: o estorno é solicitado em até 5 dias úteis e aparece em até duas faturas seguintes, conforme o prazo da operadora.</li>
+        <li>Pix e boleto: devolução em até 10 dias úteis na conta indicada pelo contratante.</li>
+      </ul>
+
+      <h3>4. Cancelamento de contrato recorrente</h3>
+      <p>Contratos de prestação continuada podem ser encerrados por qualquer das partes mediante aviso com 30 dias de antecedência. Os serviços seguem sendo prestados durante o aviso prévio e o período correspondente é devido.</p>
+
+      <h3>5. Serviços já executados</h3>
+      <p>Findo o prazo de arrependimento, não há reembolso de períodos já prestados. Valores pagos referentes a períodos futuros ainda não iniciados são devolvidos proporcionalmente.</p>
+
+      <h3>6. Verba de mídia</h3>
+      <p>Valores investidos diretamente nas plataformas de anúncio não são honorários da SG Soluções Digitais e não compõem a base de reembolso. Eventual devolução de saldo segue as regras da própria plataforma.</p>
+
+      <h3>7. Dúvidas</h3>
+      <p>Qualquer dúvida sobre esta política pode ser encaminhada para sgequipeacessos@gmail.com ou pelo telefone +55 (11) 92678-3180.</p>
+    </div>
+  </section>
+
+  <!-- ===================== AVISO LEGAL ===================== -->
+  <section class="page" id="aviso">
+    <div class="legal">
+      <h1 style="font-size:clamp(30px,4.4vw,44px)">Aviso Legal</h1>
+      <p class="stamp">Última atualização: 14 de setembro de 2026. Leia com atenção antes de contratar qualquer serviço da SG Soluções Digitais Ltda., CNPJ 52.972.212/0001-34.</p>
+
+      <h3>1. Ausência de garantia de resultado</h3>
+      <p>Nenhum conteúdo deste site constitui promessa, garantia ou projeção de faturamento, lucro ou retorno sobre investimento. Resultados em mídia paga dependem de produto, oferta, preço, mercado, concorrência, verba disponível e do próprio leilão das plataformas — fatores que não estão sob controle exclusivo da empresa.</p>
+
+      <h3>2. Casos e exemplos</h3>
+      <p>Qualquer caso, número ou exemplo eventualmente citado refere-se a um contexto específico e não representa resultado típico nem esperado. Não há qualquer garantia de que resultados semelhantes sejam obtidos por outros contratantes.</p>
+
+      <h3>3. Ausência de vínculo com plataformas</h3>
+      <p>A SG Soluções Digitais Ltda. é uma empresa independente. Não possui vínculo societário, representação, patrocínio ou endosso da Meta Platforms, Inc., da Google LLC ou de qualquer outra plataforma de anúncio mencionada. Marcas de terceiros citadas pertencem a seus respectivos titulares e são usadas apenas para identificar os canais em que prestamos serviço.</p>
+
+      <h3>4. Conteúdo informativo</h3>
+      <p>As informações deste site têm finalidade informativa e não constituem aconselhamento jurídico, contábil, financeiro, tributário ou médico. Decisões de negócio devem ser tomadas com apoio dos profissionais habilitados de cada área.</p>
+
+      <h3>5. Responsabilidade do contratante</h3>
+      <p>O contratante é responsável pela legalidade, veracidade e conformidade do produto anunciado, incluindo registros obrigatórios, alegações publicitárias e adequação às políticas de publicidade das plataformas. Reservamo-nos o direito de recusar ou encerrar a prestação de serviço diante de conteúdo que viole a legislação vigente ou as políticas dessas plataformas.</p>
+
+      <h3>6. Alterações</h3>
+      <p>Este aviso pode ser atualizado a qualquer momento. A data no topo indica a versão vigente.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="shell">
+    <div class="frow">
+      <div class="fid">
+        <strong>SG Soluções Digitais Ltda.</strong>
+        CNPJ 52.972.212/0001-34<br>
+        Rua Cel. José Eusébio, 95 — Casa 13, Higienópolis<br>
+        São Paulo — SP, CEP 01239-030<br>
+        +55 (11) 92678-3180<br>
+        sgequipeacessos@gmail.com
+      </div>
+      <div class="fnav">
+        <h4>Empresa</h4>
+        <button data-go="inicio">Início</button>
+        <button data-go="empresa">Quem somos</button>
+        <button data-go="servicos">Serviços</button>
+        <button data-go="contato">Contato</button>
+      </div>
+      <div class="fnav">
+        <h4>Legal</h4>
+        <button data-go="privacidade">Política de Privacidade</button>
+        <button data-go="termos">Termos de Uso</button>
+        <button data-go="reembolso">Reembolso e Cancelamento</button>
+        <button data-go="aviso">Aviso Legal</button>
+        <h4 style="margin-top:22px">Perfis</h4>
+        <a href="https://www.facebook.com/sgsolucoesdigitais">Facebook</a>
+        <a href="https://www.instagram.com/sgsolucoesdigitais">Instagram</a>
+        <a href="https://www.linkedin.com/company/sgsolucoesdigitais">LinkedIn</a>
+      </div>
+    </div>
+    <div class="fbase">
+      <span>© 2026 SG Soluções Digitais Ltda. Todos os direitos reservados.</span>
+      <span>sgsolucoesdigitais.online</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var navBtns = Array.prototype.slice.call(document.querySelectorAll('#nav button'));
+
+  function show(id, push){
+    var target = document.getElementById(id);
+    if(!target) return;
+    pages.forEach(function(p){ p.classList.toggle('is-on', p === target); });
+    navBtns.forEach(function(b){
+      if(b.dataset.go === id){ b.setAttribute('aria-current','page'); }
+      else { b.removeAttribute('aria-current'); }
+    });
+    document.title = (id === 'inicio')
+      ? 'SG Soluções Digitais — Marketing de performance'
+      : target.querySelector('h1').textContent + ' — SG Soluções Digitais';
+    if(push !== false && location.hash !== '#' + id){
+      try { history.pushState(null,'','#'+id); } catch(e){}
+    }
+    window.scrollTo(0,0);
+  }
+
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('[data-go]');
+    if(!el) return;
+    e.preventDefault();
+    show(el.dataset.go, true);
+  });
+
+  window.addEventListener('popstate', function(){
+    show((location.hash || '#inicio').slice(1), false);
+  });
+
+  var start = (location.hash || '#inicio').slice(1);
+  if(document.getElementById(start)) show(start, false);
+})();
+</script>
+
+</body>
+</html>
