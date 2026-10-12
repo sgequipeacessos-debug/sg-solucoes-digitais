@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel Reativação Guiada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --fundo:#0b1220; --cartao:rgba(255,255,255,.045); --borda:rgba(255,255,255,.09);
+    --texto:#e8edf7; --suave:#94a3b8; --fraco:#64748b;
+    --azul:#5b8cff; --roxo:#a78bfa; --laranja:#fb923c; --verde:#34d399; --vermelho:#f87171;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 700px at 10% -20%,#1d2b55 0,transparent 60%),radial-gradient(900px 600px at 110% 10%,#2a1d55 0,transparent 55%),var(--fundo);
+       color:var(--texto);font:14px/1.5 Inter,system-ui,-apple-system,sans-serif;min-height:100vh}
+  .pagina{max-width:1240px;margin:0 auto;padding:24px 16px 48px}
+  header{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+  h1{font-size:22px;margin:0;font-weight:700;letter-spacing:-.01em}
+  .sub{color:var(--suave);font-size:13px}
+  .acoes{display:flex;gap:8px;align-items:center}
+  .btn{color:var(--suave);text-decoration:none;border:1px solid var(--borda);border-radius:8px;padding:6px 12px;font-size:13px;background:var(--cartao);cursor:pointer}
+  .btn:hover{color:var(--texto)}
+  .grade{display:grid;gap:14px}
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:14px}
+  .cartao{background:var(--cartao);border:1px solid var(--borda);border-radius:14px;padding:16px;backdrop-filter:blur(10px);min-width:0}
+  .kpi .rotulo{color:var(--suave);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  .kpi .valor{font-size:28px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums}
+  .kpi .nota{color:var(--fraco);font-size:12px;margin-top:2px}
+  .kpi.destaque{border-color:rgba(251,146,60,.45);background:linear-gradient(135deg,rgba(251,146,60,.12),rgba(255,255,255,.03))}
+  .duas{grid-template-columns:repeat(auto-fit,minmax(340px,1fr));margin-bottom:14px}
+  h2{font-size:14px;margin:0 0 2px;font-weight:600}
+  .explica{color:var(--fraco);font-size:12px;margin:0 0 12px}
+  .grafico{position:relative;height:260px}
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--borda);font-size:13px}
+  th{color:var(--suave);font-weight:500;font-size:12px}
+  td.n,th.n{text-align:right}
+  .barra{height:6px;border-radius:3px;background:var(--azul);opacity:.8}
+  .tabela{overflow-x:auto}
+  .aviso{color:var(--laranja);font-size:12px;margin-top:8px}
+  footer{color:var(--fraco);font-size:12px;margin-top:24px;line-height:1.6}
+  .erro{color:var(--vermelho)}
+  @media (max-width:420px){.duas{grid-template-columns:1fr}.kpi .valor{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="pagina">
+  <header>
+    <div>
+      <h1>Reativação Guiada</h1>
+      <div class="sub">Leads do webinário × compras na PayT · <span id="atualizado">carregando…</span></div>
+    </div>
+    <div class="acoes">
+      <button class="btn" id="recarregar" type="button">Atualizar</button>
+      <a class="btn" href="/dash/sair">Sair</a>
+    </div>
+  </header>
+
+  <section class="grade kpis" id="kpis"></section>
+
+  <section class="grade duas">
+    <div class="cartao">
+      <h2>Inscrições e vendas por dia</h2>
+      <p class="explica">Inscrições no formulário (barras) e vendas da Reativação (linha), horário de Brasília.</p>
+      <div class="grafico"><canvas id="g-dia"></canvas></div>
+    </div>
+    <div class="cartao">
+      <h2>Quanto tempo entre inscrever e comprar</h2>
+      <p class="explica">Dias entre a inscrição e a compra da Reativação, para quem comprou depois de se inscrever.</p>
+      <div class="grafico"><canvas id="g-dias"></canvas></div>
+    </div>
+  </section>
+
+  <section class="grade duas">
+    <div class="cartao">
+      <h2>Conversão por histórico no Active</h2>
+      <p class="explica">Pessoas na lista e quantas compraram a Reativação, por como compraram o Active antes.</p>
+      <div class="grafico"><canvas id="g-active"></canvas></div>
+    </div>
+    <div class="cartao">
+      <h2>Conversão por histórico no Flacidez</h2>
+      <p class="explica">Mesmo corte, pelo Programa Flacidez Nunca Mais (completo R$297 / desconto R$97).</p>
+      <div class="grafico"><canvas id="g-flacidez"></canvas></div>
+    </div>
+  </section>
+
+  <section class="grade duas">
+    <div class="cartao tabela">
+      <h2>Criativos de origem</h2>
+      <p class="explica">Top 15 por inscrições. O rastreio por anúncio começou em 12/10/2026; antes disso a página ponte perdia a UTM.</p>
+      <table id="t-criativos"></table>
+    </div>
+    <div class="cartao tabela">
+      <h2>Turmas e filas</h2>
+      <p class="explica">Turma = grupo de WhatsApp (abre um novo a cada 300 membros). Filas de disparo pela regra da equipe.</p>
+      <table id="t-turmas"></table>
+      <table id="t-filas" style="margin-top:14px"></table>
+    </div>
+  </section>
+
+  <footer>
+    Exemplo de painel montado direto do banco (Supabase do projeto Fernando Jardim): inscrições do formulário fernandojardim.online/reativacaoguiada
+    cruzadas pelo telefone/e-mail com as vendas da PayT (webhook em tempo real + export histórico desde 06/06/2026).
+    Só números agregados: nenhum dado pessoal sai do banco para esta página. Faturamento a preço de tabela (R$497 por venda), antes de taxas.
+  </footer>
+</div>
+
+<script>
+const COR = { azul:'#5b8cff', roxo:'#a78bfa', laranja:'#fb923c', verde:'#34d399', texto:'#e8edf7', suave:'#94a3b8', grade:'rgba(255,255,255,.07)' };
+const fmt = new Intl.NumberFormat('pt-BR');
+const brl = new Intl.NumberFormat('pt-BR', { style:'currency', currency:'BRL', maximumFractionDigits:0 });
+const pct = (a, b) => b ? (100 * a / b).toFixed(1).replace('.', ',') + '%' : '—';
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+const graficos = {};
+
+Chart.defaults.color = COR.suave;
+Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
+Chart.defaults.borderColor = COR.grade;
+Chart.defaults.plugins.legend.labels.boxWidth = 10;
+
+function desenhar(id, config) {
+  if (graficos[id]) graficos[id].destroy();
+  graficos[id] = new Chart(document.getElementById(id), config);
+}
+
+function kpi(rotulo, valor, nota, destaque) {
+  return `<div class="cartao kpi${destaque ? ' destaque' : ''}"><div class="rotulo">${rotulo}</div><div class="valor">${valor}</div>${nota ? `<div class="nota">${nota}</div>` : ''}</div>`;
+}
+
+function barrasPerfil(id, linhas) {
+  desenhar(id, {
+    type: 'bar',
+    data: {
+      labels: linhas.map((l) => l.perfil),
+      datasets: [
+        { label: 'Pessoas na lista', data: linhas.map((l) => l.pessoas), backgroundColor: 'rgba(91,140,255,.55)', borderRadius: 6 },
+        { label: 'Compraram a Reativação', data: linhas.map((l) => l.compraram), backgroundColor: COR.laranja, borderRadius: 6 },
+      ],
+    },
+    options: {
+      maintainAspectRatio: false,
+      plugins: { tooltip: { callbacks: { afterBody: (it) => { const l = linhas[it[0].dataIndex]; return 'Conversão: ' + pct(l.compraram, l.pessoas); } } } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+    },
+  });
+}
+
+function tabela(id, cabecalhos, linhas) {
+  document.getElementById(id).innerHTML =
+    '<thead><tr>' + cabecalhos.map((c) => `<th class="${c.n ? 'n' : ''}">${c.t}</th>`).join('') + '</tr></thead><tbody>' +
+    linhas.map((l) => '<tr>' + l.map((v, i) => `<td class="${cabecalhos[i].n ? 'n' : ''}">${v}</td>`).join('') + '</tr>').join('') + '</tbody>';
+}
+
+async function carregar() {
+  document.getElementById('atualizado').textContent = 'carregando…';
+  const r = await fetch('/dash/api', { cache: 'no-store' });
+  if (r.status === 401) { location.href = '/dash'; return; }
+  if (!r.ok) { document.getElementById('atualizado').innerHTML = '<span class="erro">falha ao carregar os dados</span>'; return; }
+  const d = await r.json();
+  const k = d.kpis;
+
+  document.getElementById('atualizado').textContent =
+    'atualizado ' + new Date(d.gerado_em).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
+
+  document.getElementById('kpis').innerHTML = [
+    kpi('Pessoas na lista', fmt.format(k.pessoas), k.inscricoes > k.pessoas ? fmt.format(k.inscricoes) + ' inscrições' : 'inscritas no webinário'),
+    kpi('Compraram a Reativação', fmt.format(k.converteram_depois), 'conversão ' + pct(k.converteram_depois, k.pessoas), true),
+    kpi('Faturamento (tabela)', brl.format(k.faturamento_tabela), fmt.format(k.vendas_total) + ' vendas · inclui quem comprou sem se inscrever'),
+    kpi('Já eram clientes Active', pct(k.ja_eram_active, k.pessoas), fmt.format(k.ja_eram_active) + ' de ' + fmt.format(k.pessoas)),
+    kpi('Fila de disparo', fmt.format(k.fila_disparo), k.proximo_lead ? 'próximo: lead nº ' + k.proximo_lead : 'nenhum pendente'),
+    kpi('Recuperação', fmt.format(k.fila_recuperacao), 'tentaram pagar e não pagaram'),
+  ].join('');
+
+  desenhar('g-dia', {
+    data: {
+      labels: d.por_dia.map((x) => x.dia.slice(8, 10) + '/' + x.dia.slice(5, 7)),
+      datasets: [
+        { type: 'bar', label: 'Inscrições', data: d.por_dia.map((x) => x.inscricoes), backgroundColor: 'rgba(91,140,255,.6)', borderRadius: 4, yAxisID: 'y' },
+        { type: 'line', label: 'Vendas', data: d.por_dia.map((x) => x.vendas), borderColor: COR.laranja, backgroundColor: COR.laranja, tension: .3, pointRadius: 3, yAxisID: 'y2' },
+      ],
+    },
+    options: {
+      maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+      scales: {
+        y: { beginAtZero: true, ticks: { precision: 0 }, title: { display: true, text: 'inscrições' } },
+        y2: { beginAtZero: true, position: 'right', grid: { display: false }, ticks: { precision: 0 }, title: { display: true, text: 'vendas' } },
+      },
+    },
+  });
+
+  const maxDias = Math.max(0, ...d.dias_ate_comprar.map((x) => x.dias));
+  const porDia = Array.from({ length: maxDias + 1 }, (_, i) => (d.dias_ate_comprar.find((x) => x.dias === i) || {}).pessoas || 0);
+  desenhar('g-dias', {
+    type: 'bar',
+    data: { labels: porDia.map((_, i) => i === 0 ? 'mesmo dia' : i + (i === 1 ? ' dia' : ' dias')),
+            datasets: [{ label: 'Compradores', data: porDia, backgroundColor: COR.roxo, borderRadius: 6 }] },
+    options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+  });
+
+  barrasPerfil('g-active', d.por_active);
+  barrasPerfil('g-flacidez', d.por_flacidez);
+
+  const maxInsc = Math.max(1, ...d.por_criativo.map((c) => c.inscricoes));
+  tabela('t-criativos',
+    [{ t: 'Criativo' }, { t: 'Inscrições', n: 1 }, { t: 'Compraram', n: 1 }, { t: 'Conversão', n: 1 }, { t: '' }],
+    d.por_criativo.map((c) => [
+      esc(c.criativo) + (c.ad_id ? `<div class="sub">${esc(c.ad_id)}</div>` : ''),
+      fmt.format(c.inscricoes), fmt.format(c.compraram), pct(c.compraram, c.inscricoes),
+      `<div class="barra" style="width:${Math.round(80 * c.inscricoes / maxInsc)}px"></div>`,
+    ]));
+
+  tabela('t-turmas',
+    [{ t: 'Turma' }, { t: 'Pessoas', n: 1 }, { t: 'Compraram', n: 1 }, { t: 'Conversão', n: 1 }],
+    d.por_turma.map((t) => ['Turma ' + t.turma, fmt.format(t.pessoas), fmt.format(t.compraram), pct(t.compraram, t.pessoas)]));
+
+  const nomeFila = { disparo: 'Disparo (não comprou)', recuperacao: 'Recuperação (tentou e não pagou)', nao_disparar: 'Não disparar (comprou / reembolso)' };
+  tabela('t-filas',
+    [{ t: 'Fila' }, { t: 'Pessoas', n: 1 }, { t: '% da lista', n: 1 }],
+    d.por_fila.map((f) => [nomeFila[f.fila] || esc(f.fila), fmt.format(f.pessoas), pct(f.pessoas, k.pessoas)]));
+}
+
+document.getElementById('recarregar').addEventListener('click', carregar);
+carregar();
+</script>
+</body>
+</html>
