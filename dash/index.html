@@ -25,7 +25,7 @@
   .btn{color:var(--suave);text-decoration:none;border:1px solid var(--borda);border-radius:8px;padding:6px 12px;font-size:13px;background:var(--cartao);cursor:pointer}
   .btn:hover{color:var(--texto)}
   .grade{display:grid;gap:14px}
-  .kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:14px}
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:14px}
   .cartao{background:var(--cartao);border:1px solid var(--borda);border-radius:14px;padding:16px;backdrop-filter:blur(10px);min-width:0}
   .kpi .rotulo{color:var(--suave);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
   .kpi .valor{font-size:28px;font-weight:700;margin-top:4px;font-variant-numeric:tabular-nums}
@@ -180,7 +180,7 @@ async function carregar() {
       labels: d.por_dia.map((x) => x.dia.slice(8, 10) + '/' + x.dia.slice(5, 7)),
       datasets: [
         { type: 'bar', label: 'Inscrições', data: d.por_dia.map((x) => x.inscricoes), backgroundColor: 'rgba(91,140,255,.6)', borderRadius: 4, yAxisID: 'y' },
-        { type: 'line', label: 'Vendas', data: d.por_dia.map((x) => x.vendas), borderColor: COR.laranja, backgroundColor: COR.laranja, tension: .3, pointRadius: 3, yAxisID: 'y2' },
+        { type: 'line', label: 'Vendas', data: d.por_dia.map((x) => x.vendas), borderColor: COR.laranja, backgroundColor: COR.laranja, cubicInterpolationMode: 'monotone', pointRadius: 3, yAxisID: 'y2' },
       ],
     },
     options: {
